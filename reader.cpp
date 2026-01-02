@@ -1,53 +1,16 @@
-#include <iostream>
-#include <regex>
-#include <string>
-
-enum TokenTypes { NA, WHITESPACE, OPEN_PAREN, CLOSE_PAREN,
-                  COMMENT, QUOTE, BOOLEAN, IDENTIFIER};
-struct TokenRegex {
-    TokenTypes typ;
-    std::regex reg;
-};
-
-static const TokenRegex regs[] = {
-            { TokenTypes::WHITESPACE,      std::regex("[\\s]+")},
-            { TokenTypes::OPEN_PAREN,      std::regex("\\(")    },
-            { TokenTypes::CLOSE_PAREN,     std::regex("\\)")    },
-            { TokenTypes::COMMENT,         std::regex(";.*")    },
-            { TokenTypes::QUOTE,           std::regex("\'")     },
-            { TokenTypes::BOOLEAN,         std::regex("true")   },
-            { TokenTypes::BOOLEAN,         std::regex("false")  },
-            { TokenTypes::IDENTIFIER,      std::regex("[+-=/*]")  },
-            { TokenTypes::IDENTIFIER,      std::regex("[_a-zA-Z][_\\w]*")  }
-};
+#include "reader.h"
 
 
-class Tokenizer {
-    public:
-        Tokenizer(std::string &str);
-        
-        ~Tokenizer() {
-        }
-
-        bool eof() const {
-            return cur_pos == end_pos;
-        }
-
-        bool match_next();
-    private:
-        std::string token_string;
-        TokenTypes  token_type;
-        std::string::const_iterator cur_pos;
-        std::string::const_iterator end_pos;
-
-
-};
-
-Tokenizer::Tokenizer(std::string &str):
-    cur_pos(str.begin()), end_pos(str.end())
+Tokenizer::Tokenizer(std::string &str)
+    //input_string(str), cur_pos(str.begin()), end_pos(str.end())
 {
-    token_type = NA;
+    token_string = "";
+    token_type   = NA;
+    input_string = str;
+    cur_pos = input_string.begin();
+    end_pos = input_string.end();
 }
+
 
 
 bool Tokenizer::match_next() {
@@ -56,6 +19,7 @@ bool Tokenizer::match_next() {
         return false;
     }
 
+    // Iterate through list of token regexs
     for (auto i : regs) {
         auto flags = std::regex_constants::match_continuous;
         std::smatch match;
@@ -66,9 +30,7 @@ bool Tokenizer::match_next() {
             cur_pos +=   match.length(0);
 
             std::cout <<"{" << i.typ <<"  " <<match.length(0);
-            std::cout <<" ," <<token_string <<"}" <<std::endl;
-            //std::string s(cur_pos, end_pos);
-            //std::cout <<"{" <<s <<"}" << std::endl;
+            std::cout <<" ," <<token_string <<"}  " ; //<<std::endl;
 
             return true;
         }
@@ -79,15 +41,15 @@ bool Tokenizer::match_next() {
 }
 
 
-/*int main() {
-    std::string inpt="   (lambda (x) (+ 2 x)) ; I'm done";
-    Tokenizer t(inpt);
-    std::cout <<inpt <<std::endl;
-    std::cout <<"a" <<std::endl;
-    while (t.match_next()) { }
-    std::cout <<"b" <<std::endl;
+std::string Tokenizer::next() {
+    if (eof()) {
+        return "end";
+    }
+    std::string ret_string = token_string;
+    match_next();
+    return ret_string;
+}
 
-    return 0;
-}*/
-
-
+std::string Tokenizer::peek() {
+    return token_string;
+}
