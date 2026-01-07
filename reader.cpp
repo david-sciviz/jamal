@@ -2,19 +2,23 @@
 
 
 Tokenizer::Tokenizer(std::string &str)
-    //input_string(str), cur_pos(str.begin()), end_pos(str.end())
 {
     token_string = "";
     token_type   = NA;
     input_string = str;
     cur_pos = input_string.begin();
     end_pos = input_string.end();
+
+    next();
 }
 
 
+bool Tokenizer::eof() const { return (cur_pos == end_pos); }
+
 
 bool Tokenizer::match_next() {
-    if (cur_pos == end_pos) {
+    // Checking for EOF
+    if (eof()) {
         token_type = NA;
         return false;
     }
@@ -24,6 +28,8 @@ bool Tokenizer::match_next() {
         auto flags = std::regex_constants::match_continuous;
         std::smatch match;
         std::regex_search(cur_pos, end_pos, match, i.reg, flags);
+
+        // We found a match? Do stuff and return true.
         if (match.length(0) != 0) {
             token_string = match[0];
             token_type   = i.typ;
@@ -35,6 +41,8 @@ bool Tokenizer::match_next() {
             return true;
         }
     }
+
+    // No match found
     token_type = NA;
     cur_pos++;
     return false;
