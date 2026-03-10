@@ -5,14 +5,14 @@
 #include <regex>
 #include <string>
 
-enum TokenTypes { NA, WHITESPACE, OPEN_PAREN, CLOSE_PAREN,
-                  COMMENT, QUOTE, BOOLEAN, IDENTIFIER, NUMBER, JUNK};
-struct TokenRegex {
+#include "types.h"
+
+struct TokenStruct {
     TokenTypes typ;
     std::regex reg;
 };
 
-static const TokenRegex regs[] = {
+static const TokenStruct regs[] = {
             { TokenTypes::WHITESPACE,      std::regex("[\\s]+") },
             { TokenTypes::OPEN_PAREN,      std::regex("\\(")    },
             { TokenTypes::CLOSE_PAREN,     std::regex("\\)")    },
@@ -37,8 +37,9 @@ class Tokenizer {
 
         // TODO (David) : Returning strings below, but
         // should I be returning token types as well?
-        std::string next();  // Return current token and increment
-        std::string peek();  // Return current token
+        std::string next();  // Return current token str and increment
+        std::string peek();  // Return current token str
+        TokenTypes  peek_tok();
     private:
         // Store of current token
         std::string token_string;
@@ -51,5 +52,9 @@ class Tokenizer {
 
         bool match_next();
 };
+
+JamalType* read_list(Tokenizer &token, const std::string &beg, const std::string &end);
+JamalType* read_atom(Tokenizer &token);
+JamalType* read_form(Tokenizer &token);
 
 #endif

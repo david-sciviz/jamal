@@ -35,8 +35,10 @@ bool Tokenizer::match_next() {
             token_type   = i.typ;
             cur_pos +=   match.length(0);
 
+#ifdef DEBUG_TOKEN_OUT
             std::cout <<"{" << i.typ <<"  " <<match.length(0);
             std::cout <<" ," <<token_string <<"}  " ; //<<std::endl;
+#endif
 
             return true;
         }
@@ -47,7 +49,6 @@ bool Tokenizer::match_next() {
     cur_pos++;
     return false;
 }
-
 
 std::string Tokenizer::next() {
     if (eof()) {
@@ -60,4 +61,50 @@ std::string Tokenizer::next() {
 
 std::string Tokenizer::peek() {
     return token_string;
+}
+
+TokenTypes Tokenizer::peek_tok() {
+    return token_type;
+}
+
+JamalType *read_list(Tokenizer &token, const std::string &beg, const std::string &end) {
+    std::vector<JamalType*> *ast = new std::vector<JamalType*>;
+    TokenTypes cur_tok=token.peek_tok();
+    
+#ifdef DEBUG_OUT
+    std::cout <<"read_list() " <<beg <<std::endl;
+#endif
+
+    while (token.peek() !=  end) {
+        // TODO David: The reference code checks for EOF
+        // at this point. I should do the same.
+        JamalType *jal = read_form(token);
+        ast->push_back(jal);
+    }
+    token.next();
+
+    return new JamalList(cur_tok, beg, ast);
+}
+
+JamalType *read_atom(Tokenizer &token) {
+#ifdef DEBUG_OUT
+    std::cout <<"read_atom() " <<token.peek() <<std::endl;
+#endif
+    JamalAtom *ast = new JamalAtom(token.peek_tok(), token.peek());
+    token.next();
+
+    return ast;
+}
+
+JamalType* read_form(Tokenizer &token) {
+    while (token.peek_tok() == WHITESPACE) token.next();
+    if (token.peek() == "(") {
+        token.next();
+        return read_list(token, "(", ")");
+    }
+    if (token.peek() == "{") {
+        token.next();
+        return read_list(token, "{", "}");
+    }
+    return read_atom(token);
 }

@@ -2,7 +2,8 @@
 default: all
 
 CC := g++
-FFLAGS := -O2
+# FFLAGS := -O0 -g
+FFLAGS := -O0 -g -DDEBUG_OUT
 LFLAGS := 
 
 step0_repl.o: step0_repl.cpp
