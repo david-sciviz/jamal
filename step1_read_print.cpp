@@ -14,23 +14,28 @@ JamalType* read() {
 }
 
 JamalType* eval(JamalType* jal) {
+    std::cout <<"Eval" <<std::endl;
     return jal;
 }
 
-void print(JamalType *jal) {
-    std::cout <<"Done with jal" <<std::endl;
-    delete jal;
+JamalType* print(JamalType *jal) {
+    std::cout <<"Printing: " <<std::endl;
+    jal->print();
+    return jal;
 }
 
 int rep() {
-    std::string ret;
-    print(eval(read()));
+    JamalType* jal;
+    jal = print(eval(read()));
+    std::cout <<std::endl <<"Done with Jal" <<std::endl;
+    delete jal;
+
     return 1;
 }
 
 int repl() {
-    std::cout <<"input> ";
-rep();
+//    std::cout <<"input> ";
+    rep();
 //    while (rep()) {
 //        std::cout <<"input> ";
 //    }
