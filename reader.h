@@ -16,6 +16,8 @@ static const TokenStruct regs[] = {
             { TokenTypes::WHITESPACE,      std::regex("[\\s]+") },
             { TokenTypes::OPEN_PAREN,      std::regex("\\(")    },
             { TokenTypes::CLOSE_PAREN,     std::regex("\\)")    },
+            { TokenTypes::OPEN_PAREN,      std::regex("\\{")    },
+            { TokenTypes::CLOSE_PAREN,     std::regex("\\}")    },
             { TokenTypes::COMMENT,         std::regex(";.*")    },
             { TokenTypes::QUOTE,           std::regex("\'")     },
             { TokenTypes::BOOLEAN,         std::regex("true")   },

@@ -83,7 +83,7 @@ JamalType *read_list(Tokenizer &token, const std::string &beg, const std::string
     }
     token.next();
 
-    return new JamalList(cur_tok, beg, ast);
+    return new JamalList(cur_tok, beg, end, ast);
 }
 
 JamalType *read_atom(Tokenizer &token) {

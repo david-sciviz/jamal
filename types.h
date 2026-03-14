@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 enum TokenTypes { NA, WHITESPACE, OPEN_PAREN, CLOSE_PAREN,
                   COMMENT, QUOTE, BOOLEAN, IDENTIFIER, NUMBER, JUNK};
@@ -27,18 +28,23 @@ class JamalType {
 
 class JamalList : public JamalType {
     public:
-        JamalList(TokenTypes token, std::string str, std::vector<JamalType*> *ast) :
-        m_value(ast)
+        JamalList(TokenTypes token, std::string str, std::string end, std::vector<JamalType*> *ast) :
+        m_end(end), m_value(ast)
         { m_token=token; m_string=str; }
 
         ~JamalList() { for (auto i : *m_value) delete i; delete m_value; }
 
-	void print_indent(int ind) { std::cout <<std::endl;
+	void print_indent(int ind) { //std::cout <<std::endl;
 		                     for (auto i=0; i<ind; i++) std::cout <<' ';
+                                     std::cout <<m_string;
 		                     for (auto i : *m_value) i->print_indent(ind+4);
-				     }
+                                     std::cout <<m_end <<std::endl;
+		                     for (auto i=0; i<(ind - 4) ; i++) std::cout <<' ';
+}
+ 
     private:
         std::vector<JamalType*> *m_value;
+        std::string m_end;
 };
 
 class JamalAtom : public JamalType {

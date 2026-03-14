@@ -1,8 +1,21 @@
 #include "main.h"
 
+/*
+ ((lambda
+      (x)
+      (+ 2.0 x)
+   ) x
+ )
+
+  ((lambda
+    (x)
+    (+
+       (* 2 3)
+       3)
+*/
 JamalType* read() {
     // Stand-in for "cin"
-    std::string line(" (lambda (x) (+ 2.0 x)) ; Comment til end of line");
+    std::string line(" {(lambda (x) (+ 2.0 x)) 10} ; Comment til the end of line");
     std::cout <<std::endl <<line <<std::endl <<std::endl;
 
     
@@ -20,7 +33,7 @@ JamalType* eval(JamalType* jal) {
 
 JamalType* print(JamalType *jal) {
     std::cout <<"Printing: " <<std::endl;
-    jal->print();
+    print_string(jal);
     return jal;
 }
 

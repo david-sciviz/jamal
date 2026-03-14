@@ -5,6 +5,8 @@
 #include <string>
 #include <regex>
 
+#include "types.h"
 #include "reader.h"
+#include "printer.h"
 
 #endif
