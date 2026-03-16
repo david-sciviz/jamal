@@ -34,12 +34,9 @@ class JamalList : public JamalType {
 
         ~JamalList() { for (auto i : *m_value) delete i; delete m_value; }
 
-	void print_indent(int ind) { //std::cout <<std::endl;
-		                     for (auto i=0; i<ind; i++) std::cout <<' ';
-                                     std::cout <<m_string;
+	void print_indent(int ind) { std::cout <<m_string;
 		                     for (auto i : *m_value) i->print_indent(ind+4);
-                                     std::cout <<m_end <<std::endl;
-		                     for (auto i=0; i<(ind - 4) ; i++) std::cout <<' ';
+                                     std::cout <<m_end <<' ';
 }
  
     private:

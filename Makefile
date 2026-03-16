@@ -12,16 +12,20 @@ step0_repl.o: step0_repl.cpp
 step1_read_print.o: step1_read_print.cpp types.h main.h
 	$(CC) -c step1_read_print.cpp $(FFLAGS) -o step1_read_print.o
 
+step2_eval.o: step2_eval.cpp types.h main.h
+	$(CC) -c step2_eval.cpp $(FFLAGS) -o step2_eval.o
+
 reader.o: reader.cpp reader.h types.h
 	$(CC) -c reader.cpp $(FFLAGS) -o reader.o
 
 printer.o: printer.cpp printer.h types.h
+	$(CC) -c printer.cpp $(CFLAGS) -o printer.o
 
-all: step1_read_print.o reader.o printer.o
-	$(CC) step1_read_print.o reader.o printer.o $(LFLAGS) -o main.x
+all: step2_eval.o reader.o printer.o
+	$(CC) step2_eval.o reader.o printer.o $(LFLAGS) -o jamal
 
 run:
-	./main.x
+	./jamal
 
 clean:
 	rm -f *.o
