@@ -4,16 +4,10 @@ default: all
 CC := g++
 #FFLAGS := -O3
 FFLAGS := -O0 -g -DDEBUG_OUT
-LFLAGS := 
+LFLAGS := -lreadline
 
-step0_repl.o: step0_repl.cpp
-	$(CC) -c step0_repl.cpp $(FFLAGS) -o step0_repl.o
-
-step1_read_print.o: step1_read_print.cpp types.h main.h
-	$(CC) -c step1_read_print.cpp $(FFLAGS) -o step1_read_print.o
-
-step2_eval.o: step2_eval.cpp types.h main.h
-	$(CC) -c step2_eval.cpp $(FFLAGS) -o step2_eval.o
+main.o: main.cpp types.h main.h
+	$(CC) -c main.cpp $(FFLAGS) -o main.o
 
 reader.o: reader.cpp reader.h types.h
 	$(CC) -c reader.cpp $(FFLAGS) -o reader.o
@@ -21,8 +15,8 @@ reader.o: reader.cpp reader.h types.h
 printer.o: printer.cpp printer.h types.h
 	$(CC) -c printer.cpp $(CFLAGS) -o printer.o
 
-all: step2_eval.o reader.o printer.o
-	$(CC) step2_eval.o reader.o printer.o $(LFLAGS) -o jamal
+all: main.o reader.o printer.o
+	$(CC) main.o reader.o printer.o $(LFLAGS) -o jamal
 
 run:
 	./jamal
