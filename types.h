@@ -25,10 +25,11 @@ class JamalType {
         TokenTypes m_token;
         std::string m_string;
 };
+typedef JamalType* JamalTypePtr;
 
 class JamalList : public JamalType {
     public:
-        JamalList(TokenTypes token, std::string str, std::string end, std::vector<JamalType*> *ast) :
+        JamalList(TokenTypes token, std::string str, std::string end, std::vector<JamalTypePtr> *ast) :
         m_end(end), m_value(ast)
         { m_token=token; m_string=str; }
 
@@ -40,7 +41,7 @@ class JamalList : public JamalType {
 }
  
     private:
-        std::vector<JamalType*> *m_value;
+        std::vector<JamalTypePtr> *m_value;
         std::string m_end;
 };
 
